@@ -30,7 +30,13 @@ function addProduct($item_code, $item_name, $price, $stock){
     $stmt->bindParam(':item_name', $item_name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':stock', $stock);
-    $stmt->execute();
+    if ($stmt->execute()) {
+        $response = [
+            'status' => 200,
+            'pesan' => 'Data berhasil ditambahkan'
+        ];
+        echo json_encode($response);
+    }
     
 }
 
@@ -42,14 +48,26 @@ function updateProduct($id, $item_code, $item_name, $price, $stock){
     $stmt->bindParam(':item_name', $item_name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':stock', $stock);
-    $stmt->execute();
+    if ($stmt->execute()) {
+        $response = [
+            'status' => 200,
+            'pesan' => 'Data berhasil diubah'
+        ];
+        echo json_encode($response);
+    }
 }
 
 function deleteProduct($id){
     $db = connectDb();
     $stmt = $db->prepare('DELETE FROM tb_item WHERE id = :id');
     $stmt->bindParam(':id', $id);
-    $stmt->execute();
+    if ($stmt->execute()) {
+        $response = [
+            'status' => 200,
+            'pesan' => 'Data berhasil dihapus'
+        ];
+        echo json_encode($response);
+    }
 }
 
 if(isset($_GET['page']) && $_GET['page'] == "delete-product"){
