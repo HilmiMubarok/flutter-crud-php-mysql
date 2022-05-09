@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/models/product_response.dart';
 
 import 'apiservices.dart';
+import 'models/product_response.dart';
 import 'widgets/myDrawer.dart';
 
 // final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
 class AddProduct extends StatefulWidget {
+  AddProduct({this.product});
+
+  Product? product;
+
   @override
   State<AddProduct> createState() => _AddProductState();
 }
@@ -16,32 +20,31 @@ class _AddProductState extends State<AddProduct> {
 
   ApiServices _apiService = ApiServices();
 
-  // bool? _isFieldProductValid;
-
-  // bool? _isFieldCodeValid;
-
-  // bool? _isFieldStockValid;
-
-  // bool? _isFieldPriceValid;
-
   TextEditingController _controllerProduct = TextEditingController();
-
   TextEditingController _controllerCode = TextEditingController();
-
   TextEditingController _controllerPrice = TextEditingController();
-
   TextEditingController _controllerStock = TextEditingController();
+
+  @override
+  void initState() {
+    _controllerProduct.text = widget.product?.itemName ?? "";
+    _controllerCode.text = widget.product?.itemCode ?? "";
+    _controllerPrice.text = widget.product?.price ?? "";
+    _controllerStock.text = widget.product?.stock ?? "";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // key: _scaffoldState,
       appBar: AppBar(
-        title: Text('Tambah Produk'),
+        title:
+            widget.product != null ? Text('Edit Product') : Text('Add Product'),
       ),
       drawer: MyDrawer(),
       // create list products
-      body: Column(
+      body: ListView(
         children: <Widget>[
           Container(
             width: 120,
@@ -70,54 +73,57 @@ class _AddProductState extends State<AddProduct> {
                     _buildTextFieldPrice(),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: RaisedButton(
-                        onPressed: () {
-                          // if (_isFieldProductValid == null ||
-                          //     _isFieldCodeValid == null ||
-                          //     _isFieldStockValid == null ||
-                          //     _isFieldPriceValid == null) {
-                          //   _scaffoldState.currentState.showSnackBar(
-                          //     SnackBar(
-                          //       content: Text("Please fill all field"),
-                          //     ),
-                          //   );
-                          //   return;
-                          // }
-                          setState(() => _isLoading = true);
-                          String productname =
-                              _controllerProduct.text.toString();
-                          String productcode = _controllerCode.text.toString();
-                          String stock = _controllerStock.text.toString();
-                          String price = _controllerPrice.text.toString();
-                          Product product = Product(
-                              itemCode: productcode,
-                              itemName: productname,
-                              price: price,
-                              stock: stock);
-                          _apiService.addProduct(product).then((isSuccess) {
-                            setState(() => _isLoading = false);
-                            if (isSuccess) {
-                              Navigator.pop(context);
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text("Submit data failed")));
-                            }
-                          });
-                        },
-                        child: Text(
-                          "Submit".toUpperCase(),
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                        color: Colors.teal,
-                      ),
+                      child: _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : RaisedButton(
+                              onPressed: () {
+                                setState(() => _isLoading = true);
+                                String productname =
+                                    _controllerProduct.text.toString();
+                                String productcode =
+                                    _controllerCode.text.toString();
+                                String stock = _controllerStock.text.toString();
+                                String price = _controllerPrice.text.toString();
+                                Product product = Product(
+                                    itemCode: productcode,
+                                    itemName: productname,
+                                    price: price,
+                                    stock: stock);
+
+                                if (widget.product != null) {
+                                  product.id = widget.product?.id;
+                                  _apiService
+                                      .updateProduct(product)
+                                      .then((value) {
+                                    setState(() => _isLoading = false);
+                                    Navigator.pop(context);
+                                  });
+                                } else {
+                                  _apiService.addProduct(product).then((hasil) {
+                                    setState(() => _isLoading = false);
+                                    if (hasil.status == 200) {
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content:
+                                                  Text("Submit data failed")));
+                                    }
+                                  });
+                                }
+                              },
+                              child: Text(
+                                "Submit".toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              color: Colors.teal,
+                            ),
                     )
                   ],
                 ),
               ),
-              _isLoading ? CircularProgressIndicator() : Container(),
             ],
           )
           // create list products
@@ -132,16 +138,7 @@ class _AddProductState extends State<AddProduct> {
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
         labelText: "Item Name",
-        // errorText: _isFieldProductValid == null || _isFieldProductValid
-        //     ? null
-        //     : "Full name is required",
       ),
-      // onChanged: (value) {
-      //   bool isFieldValid = value.trim().isNotEmpty;
-      //   if (isFieldValid != _isFieldProductValid) {
-      //     setState(() => _isFieldProductValid = isFieldValid);
-      //   }
-      // },
     );
   }
 
@@ -151,16 +148,7 @@ class _AddProductState extends State<AddProduct> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: "Item Code",
-        // errorText: _isFieldCodeValid == null || _isFieldCodeValid
-        //     ? null
-        //     : "Email is required",
       ),
-      // onChanged: (value) {
-      //   bool isFieldValid = value.trim().isNotEmpty;
-      //   if (isFieldValid != _isFieldCodeValid) {
-      //     setState(() => _isFieldCodeValid = isFieldValid);
-      //   }
-      // },
     );
   }
 
@@ -170,16 +158,7 @@ class _AddProductState extends State<AddProduct> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: "Stock",
-        // errorText: _isFieldStockValid == null || _isFieldStockValid
-        //     ? null
-        //     : "Age is required",
       ),
-      // onChanged: (value) {
-      //   bool isFieldValid = value.trim().isNotEmpty;
-      //   if (isFieldValid != _isFieldStockValid) {
-      //     setState(() => _isFieldStockValid = isFieldValid);
-      //   }
-      // },
     );
   }
 
@@ -189,16 +168,7 @@ class _AddProductState extends State<AddProduct> {
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         labelText: "Price",
-        // errorText: _isFieldStockValid == null || _isFieldStockValid
-        //     ? null
-        //     : "Age is required",
       ),
-      // onChanged: (value) {
-      //   bool isFieldValid = value.trim().isNotEmpty;
-      //   if (isFieldValid != _isFieldStockValid) {
-      //     setState(() => _isFieldStockValid = isFieldValid);
-      //   }
-      // },
     );
   }
 }

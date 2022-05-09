@@ -29,8 +29,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   equatable: ^2.0.3
-  flutter_flipperkit: ^0.0.24
-  flipperkit_http_interceptor: ^0.0.1
 
 dev_dependencies:
   flutter_test:

@@ -23,8 +23,9 @@ class _StoreState extends State<Store> {
 
   @override
   Widget build(BuildContext context) {
-    print("mamaia");
-    ApiServices().getProducts().then((value) => print("value: $value"));
+    ApiServices()
+        .getProducts()
+        .then((value) => print("get data test : $value"));
 
     return Scaffold(
       appBar: AppBar(
@@ -47,7 +48,7 @@ class _StoreState extends State<Store> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => AddProduct()),
-                );
+                ).then((value) => setState(() {}));
               },
             ),
           ),
@@ -58,13 +59,15 @@ class _StoreState extends State<Store> {
               builder: (BuildContext context,
                   AsyncSnapshot<List<Product>?> snapshot) {
                 if (snapshot.hasData) {
-                  List<Product>? products = snapshot.data;
+                  List<Product>? products = snapshot.data?.reversed.toList();
                   return _generateListProduct(products);
                 } else if (snapshot.hasError) {
-                  return Text(
-                      "Something wrong with message: ${snapshot.error}");
+                  print(snapshot.error);
+                  return Center(
+                    child: Text("Something wrong :("),
+                  );
                 } else {
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 }
               },
             ),
@@ -105,18 +108,15 @@ class _StoreState extends State<Store> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // MaterialButton(
-                  //   color: Colors.teal,
-                  //   textColor: Colors.white,
-                  //   onPressed: () {},
-                  //   child: Text("Detail"),
-                  // ),
-                  // SizedBox(
-                  //   width: 10,
-                  // ),
                   MaterialButton(
                     color: Colors.yellow,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddProduct(product: product)),
+                      ).then((value) => setState(() {}));
+                    },
                     child: Text("Edit"),
                   ),
                   SizedBox(
@@ -147,17 +147,17 @@ class _StoreState extends State<Store> {
 
                                     if (hasil.status == 200) {
                                       setState(() {});
-                                      print("berhasil hapus");
-                                      // ScaffoldMessenger.of(context)
-                                      //     .showSnackBar(SnackBar(
-                                      //         content:
-                                      //             Text("Delete data success")));
+                                      print(hasil.pesan);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  hasil.pesan.toString())));
                                     } else {
                                       print("gagal hapus");
-                                      // ScaffoldMessenger.of(context)
-                                      //     .showSnackBar(SnackBar(
-                                      //         content:
-                                      //             Text("Delete data failed")));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content:
+                                                  Text("Delete data failed")));
                                     }
                                   });
                                   Navigator.pop(context);
