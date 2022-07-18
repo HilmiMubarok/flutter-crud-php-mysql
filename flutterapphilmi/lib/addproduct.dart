@@ -1,8 +1,10 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 
 import 'apiservices.dart';
 import 'models/product_response.dart';
-import 'widgets/myDrawer.dart';
+import 'widgets/mydrawer.dart';
 
 // final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
 
@@ -75,6 +77,7 @@ class _AddProductState extends State<AddProduct> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: _isLoading
                           ? Center(child: CircularProgressIndicator())
+                          // ignore: deprecated_member_use
                           : RaisedButton(
                               onPressed: () {
                                 setState(() => _isLoading = true);

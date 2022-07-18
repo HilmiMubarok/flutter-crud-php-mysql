@@ -6,7 +6,7 @@ import 'models/base_response.dart';
 import 'models/product_response.dart';
 
 class ApiServices {
-  final String baseUrl = 'http://192.168.38.146/api_hilmiflutter/';
+  final String baseUrl = 'https://uas-hannalaela.000webhostapp.com/api/';
   Client client = Client();
 
   Future<List<Product>?> getProducts() async {

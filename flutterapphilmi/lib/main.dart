@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: CircleAvatar(
                           radius: 50.0,
                           backgroundImage: NetworkImage(
-                              'https://avatars.githubusercontent.com/u/29186495?v=4'),
+                              'https://uas-hannalaela.000webhostapp.com/hanna.jpeg'),
                         ),
                       ),
                     ],
@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 10,
                   ),
                   Text(
-                    'Hilmi Mubarok',
+                    'Hanna Laela',
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -94,40 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     subtitle: Text(
-                      'm.hilmimubarok@gmail.com',
+                      'hannalaela.11@gmail.com',
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
-                  Divider(),
-                  ListTile(
-                    title: Text(
-                      'GitHub',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      'https://github.com/hilmimubarok',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text(
-                      'Website',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      'https://hilmimubarok.com',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
+                  
                 ],
               ),
             ),

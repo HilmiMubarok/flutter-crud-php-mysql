@@ -12,11 +12,11 @@ class MyDrawer extends StatelessWidget {
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: Text('Hilmi'),
-            accountEmail: Text('m.hilmimubarok@gmail.com'),
+            accountName: Text('Hanna Laela'),
+            accountEmail: Text('hannalaela.11@gmail.com'),
             currentAccountPicture: CircleAvatar(
               backgroundImage: NetworkImage(
-                  'https://avatars.githubusercontent.com/u/29186495?v=4'),
+                  'https://uas-hannalaela.000webhostapp.com/hanna.jpeg'),
             ),
           ),
           ListTile(

@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use, duplicate_ignore
+
 import 'package:flutter/material.dart';
 
-import 'addProduct.dart';
+import 'addproduct.dart';
 import 'apiservices.dart';
 import 'models/product_response.dart';
 import 'widgets/mydrawer.dart';
@@ -135,6 +137,7 @@ class _StoreState extends State<Store> {
                             content: Text(
                                 "Are you sure want to delete data profile ${product.itemName}?"),
                             actions: <Widget>[
+                              // ignore: deprecated_member_use
                               FlatButton(
                                 child: Text("Yes"),
                                 onPressed: () {
